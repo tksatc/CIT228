@@ -1,0 +1,4 @@
+In Python you can process user input
+In Python you can protect data through encapsulation
+In Python you can write code close to natural language
+In Python you can modularize methods
