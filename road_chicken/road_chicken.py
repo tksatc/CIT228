@@ -9,6 +9,8 @@ from chicken import Chicken
 from vehicle import Vehicle
 from button import Button
 
+""" PERFORMANCE ISSUES DETERMINED OUTSIDE OF PROGRAM (BACKGROUND PROCESS) """
+
 class RoadChicken:
     """Class to manage game assets and behavior"""
 
