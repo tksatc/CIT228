@@ -9,8 +9,6 @@ from chicken import Chicken
 from vehicle import Vehicle
 from button import Button
 
-""" PERFORMANCE ISSUES DETERMINED OUTSIDE OF PROGRAM (BACKGROUND PROCESS) """
-
 class RoadChicken:
     """Class to manage game assets and behavior"""
 
@@ -89,11 +87,12 @@ class RoadChicken:
             self.stats.game_active = True
             self.sb.prep_score()
             self.sb.prep_level()
+            self.sb.prep_chickens()
 
             # Remove remaining traffic
             self.vehicles.empty()
 
-            # Create new traffice and center chicken
+            # Create new traffic and center chicken
             self._create_traffic()
             self.chicken.center_chicken()
             
@@ -145,8 +144,8 @@ class RoadChicken:
         # Calculate # of lanes that will fit on game screen
         #number_lanes = self.number_lanes
         chicken_height = self.chicken.rect.height
-        available_space_y = ((self.settings.screen_height -20) -
-                    int((3 * vehicle_height)) - chicken_height)
+        available_space_y = (self.settings.screen_height -
+                    (3 * vehicle_height) - chicken_height)
         number_lanes = available_space_y // int((1.25 * vehicle_height))        # IN INIT
 
         # Populate lanes of traffic
@@ -179,10 +178,20 @@ class RoadChicken:
         #self._remove_offscreen_vehicle()
         self.vehicles.update()
 
-        # Delete vehicles when they move off screen on the left
+        """ Don't think this works
         for vehicle in self.vehicles.sprites():
             if vehicle.check_left_edge():
                 self.vehicles.remove(vehicle)
+        """
+
+        # TEST NEW BLOCK FOR VEHICLE REMOVAL
+        for vehicle in self.vehicles.copy():
+            if vehicle.rect.x <= 0:
+                self.vehicles.remove(vehicle)
+
+        # TEST REPOPULATE TRAFFIC FOR CONTINUOUS FLOW
+        if not self.vehicles:
+            self._create_traffic()
 
         # Check for collisions with chickens
         if pygame.sprite.spritecollideany(self.chicken, self.vehicles):
@@ -192,8 +201,9 @@ class RoadChicken:
     def _chicken_hit(self):
         #Respond to chicken being hit by a vehicle
         if self.stats.chickens_left > 0:
-            # Decrement chicken_lives
+            # Decrement chicken_lives & update scoreboard
             self.stats.chickens_left -= 1
+            self.sb.prep_chickens()
 
             # Remove existing vehicles
             self.vehicles.empty()
@@ -208,7 +218,6 @@ class RoadChicken:
             self.stats.game_active = False
             pygame.mouse.set_visible(True)
     
-    # ADDED LAST
     def award_points(self):
         """Allot points when chicken reach top of traffic lanes"""
         screen_rect = self.screen.get_rect()
@@ -216,19 +225,20 @@ class RoadChicken:
         #if self.chicken.y <= self.settings.screen_height - 700:
             self.stats.score += self.settings.chicken_points
             self.sb.prep_score()
+            self.sb.check_high_score()
 
-            # Return chicken to midbottom
+            # Return chicken to midbottom               ADD TIMER SO CHICKEN STAYS @ BOTTOM A BIT???
             self.chicken.center_chicken()
+
+            # Increase level
+            self.stats.level += 1
+            self.sb.prep_level()
 
         # If traffic empty, create new traffic
         if not self.vehicles:
             self._create_traffic()
             self.settings.increase_speed()
             
-            # Increase level
-            self.stats.level += 1
-            self.sb.prep_level()
-
     def _update_screen(self):
         """Update images on screen & flip to new screen"""
         # Redraw screen during each loop

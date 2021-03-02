@@ -18,6 +18,9 @@ class Settings:
         # Speed increase on successive levels
         self.speedup_scale = 1.1
 
+        # Point value increases on successive levels
+        self.score_scale = 1.5
+
         self.initialize_dynamic_settings()
 
     def initialize_dynamic_settings(self):
@@ -32,7 +35,7 @@ class Settings:
         self.fleet_direction = 1
 
     def increase_speed(self):
-        """Increases speed on level-up"""
+        """Increases speed and point values on level-up"""
         self.chicken_speed *= self.speedup_scale
         self.vehicle_speed *= self.speedup_scale
-        
+        self.chicken_points = int(self.chicken_points * self.score_scale)
