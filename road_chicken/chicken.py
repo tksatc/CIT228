@@ -13,7 +13,8 @@ class Chicken(Sprite):
 
         # Load the chicken image and get its rect
         self.image = pygame.image.load("road_chicken/images/chicken-3412665_640.png")
-        self.image = pygame.transform.scale(self.image, (75, 75))           #REDUCE SIZE; ADJUST CALCS IN ROAD_CHICKEN
+        self.image = pygame.transform.scale(self.image, (65, 65))           #REDUCE SIZE; ADJUST CALCS IN ROAD_CHICKEN
+        #self.image = self.image.convert()
         self.rect = self.image.get_rect()
 
         # Start each new chicken at the bottom center position

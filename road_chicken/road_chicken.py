@@ -49,6 +49,7 @@ class RoadChicken:
             self._check_events()
             if self.stats.game_active:
                 self.chicken.update()
+                #self.award_points()         # SCORING CALL - ADDED LAST
                 self._update_vehicles()
             
             """THIS BLOCK FOR TESTING CONTINUAL FLOW OF TRAFFIC  # NOT WORKING; DELETES ALL VEHICLES
@@ -79,11 +80,17 @@ class RoadChicken:
         """Start a new game when player clicks Start"""
         button_clicked = self.start_button.rect.collidepoint(mouse_pos)
         if button_clicked and not self.stats.game_active:
+            
+            # Reset game settings
+            self.settings.initialize_dynamic_settings()
+            
             # Reset game stats
             self.stats.reset_stats()
             self.stats.game_active = True
+            self.sb.prep_score()
+            self.sb.prep_level()
 
-            # Remove remaining traffice
+            # Remove remaining traffic
             self.vehicles.empty()
 
             # Create new traffice and center chicken
@@ -127,24 +134,29 @@ class RoadChicken:
         vehicle_width, vehicle_height = vehicle.rect.size
         available_lane_length = self.settings.screen_width
         
+        available_space_x = self.settings.screen_width #- (2 * vehicle_width)    # FROM TEXT; FOR TESTING
+        number_vehicles_x = available_space_x // (3 * vehicle_width)            # FROM TEXT; FOR TESTING
+        
         # HOW TO ADD RANDOM SPACE BETWEEN???
-        #space_between = random.randrange(1, 4)
+        space_between = random.randrange(1, 4)
 
-        #number_vehicles_x = available_lane_length // (space_between * vehicle_width)
+        number_vehicles_x = available_lane_length // (space_between * vehicle_width)
 
         # Calculate # of lanes that will fit on game screen
         #number_lanes = self.number_lanes
         chicken_height = self.chicken.rect.height
-        available_space_y = (self.settings.screen_height -
-                    (2 * vehicle_height) - chicken_height)
-        number_lanes = available_space_y // int((1.75 * vehicle_height))        # IN INIT
+        available_space_y = ((self.settings.screen_height -20) -
+                    int((3 * vehicle_height)) - chicken_height)
+        number_lanes = available_space_y // int((1.25 * vehicle_height))        # IN INIT
 
         # Populate lanes of traffic
         for lane_number in range(number_lanes):
             # ADDS VARIABLE NUMBER OF CARS IN EACH LANE
-            space_between = random.randrange(1, 4)
+            space_between = random.randrange(2, 5)
             #number_vehicles_x = self.number_vehicles_x
-            number_vehicles_x = available_lane_length // (space_between * vehicle_width)    # IN INIT 
+            
+            # COMMENTED OUT FOR TESTING
+            #number_vehicles_x = available_lane_length // (space_between * vehicle_width)    # IN INIT 
 
             for vehicle_number in range(number_vehicles_x):
                 self._create_vehicle(vehicle_number, lane_number)
@@ -155,20 +167,22 @@ class RoadChicken:
         vehicle_width, vehicle_height = vehicle.rect.size
         vehicle.x = vehicle_width + 2 * vehicle_width * vehicle_number
         vehicle.rect.x = vehicle.x
-        vehicle.rect.y = vehicle.rect.height + 2 * vehicle.rect.height * lane_number
+        vehicle.rect.y = vehicle.rect.height + int(1.25 * vehicle.rect.height) * lane_number
         self.vehicles.add(vehicle)
 
-    def _remove_offscreen_vehicle(self):
-        """Delete vehicles when they move off screen on the left"""
-        for vehicle in self.vehicles.sprites():
-            if vehicle.check_left_edge():
-                pygame.sprite.Sprite.remove(self)
+    #def _remove_offscreen_vehicle(self):
+
 
     def _update_vehicles(self):
         """Update position of all vehicles in traffic"""
         # Remove vehicles that have moved off-screen, then update all vehicle positions
         #self._remove_offscreen_vehicle()
         self.vehicles.update()
+
+        # Delete vehicles when they move off screen on the left
+        for vehicle in self.vehicles.sprites():
+            if vehicle.check_left_edge():
+                self.vehicles.remove(vehicle)
 
         # Check for collisions with chickens
         if pygame.sprite.spritecollideany(self.chicken, self.vehicles):
@@ -194,6 +208,26 @@ class RoadChicken:
             self.stats.game_active = False
             pygame.mouse.set_visible(True)
     
+    # ADDED LAST
+    def award_points(self):
+        """Allot points when chicken reach top of traffic lanes"""
+        screen_rect = self.screen.get_rect()
+        if self.chicken.rect.top == screen_rect.top:
+        #if self.chicken.y <= self.settings.screen_height - 700:
+            self.stats.score += self.settings.chicken_points
+            self.sb.prep_score()
+
+            # Return chicken to midbottom
+            self.chicken.center_chicken()
+
+        # If traffic empty, create new traffic
+        if not self.vehicles:
+            self._create_traffic()
+            self.settings.increase_speed()
+            
+            # Increase level
+            self.stats.level += 1
+            self.sb.prep_level()
 
     def _update_screen(self):
         """Update images on screen & flip to new screen"""
@@ -201,6 +235,7 @@ class RoadChicken:
         self.screen.fill(self.settings.bg_color)
         self.chicken.blitme()
         self.vehicles.draw(self.screen)
+        self.award_points()      
         self.sb.show_score()
 
         # Draw Start button if game inactive

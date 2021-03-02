@@ -6,14 +6,19 @@ class Settings:
         # Screen Settings
         self.screen_width = 1200
         self.screen_height = 800
-        self.bg_color = (255, 255, 255)
+        self.bg_color = (206, 211, 212)
 
         # Chicken Settings
         self.chicken_speed = 1.5
         self.chicken_lives = 5
 
         # Vehicle Settings
-        self.vehicle_speed = 1.0
+        self.vehicle_speed = 0.5
+
+        # Speed increase on successive levels
+        self.speedup_scale = 1.1
+
+        self.initialize_dynamic_settings()
 
     def initialize_dynamic_settings(self):
         """Intitalize settings that change throughout the game"""
@@ -21,8 +26,13 @@ class Settings:
         self.vehicle_speed = 0.5
 
         # Scoring
-        self.lane_transfer_points = 50
-        self.all_lanes_complete = 100
+        self.chicken_points = 100
 
         # Traffic Direction of 1 for right, down; -1 for left, up       # DOES THIS EVEN MAKE SENSE HERE?
         self.fleet_direction = 1
+
+    def increase_speed(self):
+        """Increases speed on level-up"""
+        self.chicken_speed *= self.speedup_scale
+        self.vehicle_speed *= self.speedup_scale
+        

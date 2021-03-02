@@ -1,3 +1,4 @@
+
 class GameStats:
     """Track statistics for Road Chicken"""
 
@@ -14,5 +15,4 @@ class GameStats:
         """Initialize dynamic statistics"""
         self.chickens_left = self.settings.chicken_lives
         self.score = 0
-        
-        
+        self.level = 1    
