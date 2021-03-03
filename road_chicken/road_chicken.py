@@ -7,6 +7,7 @@ from game_stats import GameStats
 from scoreboard import Scoreboard
 from chicken import Chicken
 from vehicle import Vehicle
+from sound_effects import SoundEffects
 from button import Button
 
 class RoadChicken:
@@ -16,7 +17,10 @@ class RoadChicken:
         """Initialize game, create window, create game resources"""
         # Initialize game background settings
         pygame.init()
+        pygame.mixer.init()
         self.settings = Settings()
+        self.sound = SoundEffects()
+        self.sound.play_music()
 
         # Create game window
         self.screen = pygame.display.set_mode((self.settings.screen_width,
@@ -36,10 +40,6 @@ class RoadChicken:
         # Create a Start button
         self.start_button = Button(self, "Start")
 
-        # Make lists available to all methods for multidimensional interating
-        #self.number_lanes = 0
-        #self.number_vehicles_x = 0
-
     def run_game(self):
         """Start the main loop for the game"""
         while True:
@@ -47,15 +47,8 @@ class RoadChicken:
             self._check_events()
             if self.stats.game_active:
                 self.chicken.update()
-                #self.award_points()         # SCORING CALL - ADDED LAST
                 self._update_vehicles()
-            
-            """THIS BLOCK FOR TESTING CONTINUAL FLOW OF TRAFFIC  # NOT WORKING; DELETES ALL VEHICLES
-            # Create new traffic as sprite group empties
-            if self.vehicles.empty():
-                self._create_traffic()
-            """
-            
+                        
             self._update_screen()
 
     def _check_events(self):
@@ -87,7 +80,6 @@ class RoadChicken:
             self.stats.game_active = True
             self.sb.prep_score()
             self.sb.prep_level()
-            self.sb.prep_chickens()
 
             # Remove remaining traffic
             self.vehicles.empty()
@@ -128,92 +120,82 @@ class RoadChicken:
     def _create_traffic(self):
         """Create a fleet of vehicles to be traffic"""
         # Create a vehicles & find the number of vehicles in a row
-        # Spacing between vehicles = width of one vehicle
         vehicle = Vehicle(self)
         vehicle_width, vehicle_height = vehicle.rect.size
         available_lane_length = self.settings.screen_width
         
-        available_space_x = self.settings.screen_width #- (2 * vehicle_width)    # FROM TEXT; FOR TESTING
-        number_vehicles_x = available_space_x // (3 * vehicle_width)            # FROM TEXT; FOR TESTING
-        
-        # HOW TO ADD RANDOM SPACE BETWEEN???
-        space_between = random.randrange(1, 4)
-
-        number_vehicles_x = available_lane_length // (space_between * vehicle_width)
+        # Calculate random number of vehicles in a lane
+        space_between = random.randrange(2, 5)
+        number_vehicles_lane = available_lane_length // (space_between * vehicle_width)
 
         # Calculate # of lanes that will fit on game screen
-        #number_lanes = self.number_lanes
         chicken_height = self.chicken.rect.height
         available_space_y = (self.settings.screen_height -
                     (3 * vehicle_height) - chicken_height)
-        number_lanes = available_space_y // int((1.25 * vehicle_height))        # IN INIT
+        number_lanes = available_space_y // int((1.25 * vehicle_height))
 
-        # Populate lanes of traffic
+        # Populate a lane of vehicles
         for lane_number in range(number_lanes):
-            # ADDS VARIABLE NUMBER OF CARS IN EACH LANE
-            space_between = random.randrange(2, 5)
-            #number_vehicles_x = self.number_vehicles_x
             
-            # COMMENTED OUT FOR TESTING
-            #number_vehicles_x = available_lane_length // (space_between * vehicle_width)    # IN INIT 
+            # Create random padding
+            space_around_vehicle = random.randrange(2, 7)
+            
+            # Create continuous random flow of vehicles in lane
+            number_vehicles_lane = available_lane_length // (space_around_vehicle + vehicle_width) 
 
-            for vehicle_number in range(number_vehicles_x):
+            # Add a vehicle to a lane
+            for vehicle_number in range(number_vehicles_lane):
                 self._create_vehicle(vehicle_number, lane_number)
 
     def _create_vehicle(self, vehicle_number, lane_number):
         # Create a vehicle and place it in a row
         vehicle = Vehicle(self)
         vehicle_width, vehicle_height = vehicle.rect.size
-        vehicle.x = vehicle_width + 2 * vehicle_width * vehicle_number
+        
+        # Calculate random padding for vehicle
+        space_around_vehicle = (random.randrange(3, 5) * vehicle_width)
+        
+        # Calculate total space of vehicle (vehicle + padding)
+        vehicle.x = vehicle_width + space_around_vehicle * vehicle_number
         vehicle.rect.x = vehicle.x
         vehicle.rect.y = vehicle.rect.height + int(1.25 * vehicle.rect.height) * lane_number
         self.vehicles.add(vehicle)
 
-    #def _remove_offscreen_vehicle(self):
-
-
     def _update_vehicles(self):
         """Update position of all vehicles in traffic"""
-        # Remove vehicles that have moved off-screen, then update all vehicle positions
-        #self._remove_offscreen_vehicle()
         self.vehicles.update()
 
-        """ Don't think this works
-        for vehicle in self.vehicles.sprites():
-            if vehicle.check_left_edge():
-                self.vehicles.remove(vehicle)
-        """
-
-        # TEST NEW BLOCK FOR VEHICLE REMOVAL
+        # Remove vehicles once off screen
         for vehicle in self.vehicles.copy():
             if vehicle.rect.x <= 0:
                 self.vehicles.remove(vehicle)
 
-        # TEST REPOPULATE TRAFFIC FOR CONTINUOUS FLOW
+        # Repopulate traffic for continuous flow
         if not self.vehicles:
             self._create_traffic()
 
         # Check for collisions with chickens
         if pygame.sprite.spritecollideany(self.chicken, self.vehicles):
-            self._chicken_hit()
-            print("SPLAT!")  
+            self._chicken_hit() 
 
-    def _chicken_hit(self):
+    def _chicken_hit(self):        
+        # Play sound effect when a chicken is hit by a car
+        self.sound.play_audio_clip()
+        
         #Respond to chicken being hit by a vehicle
         if self.stats.chickens_left > 0:
             # Decrement chicken_lives & update scoreboard
             self.stats.chickens_left -= 1
-            self.sb.prep_chickens()
 
             # Remove existing vehicles
             self.vehicles.empty()
 
             # Create new traffic & chicken
             self._create_traffic()
-            self.chicken.center_chicken()
+            self.chicken.center_chicken()       
         
             # Pause briefly for user to prepare new round
-            sleep(1.0)
+            sleep(0.5)
         else:
             self.stats.game_active = False
             pygame.mouse.set_visible(True)
@@ -222,13 +204,19 @@ class RoadChicken:
         """Allot points when chicken reach top of traffic lanes"""
         screen_rect = self.screen.get_rect()
         if self.chicken.rect.top == screen_rect.top:
-        #if self.chicken.y <= self.settings.screen_height - 700:
             self.stats.score += self.settings.chicken_points
             self.sb.prep_score()
             self.sb.check_high_score()
 
-            # Return chicken to midbottom               ADD TIMER SO CHICKEN STAYS @ BOTTOM A BIT???
+            # Remove existing traffic & repopulate
+            self.vehicles.empty()
+            self._create_traffic()
+
+            # Return chicken to midbottom
             self.chicken.center_chicken()
+            
+            # Pause briefly for user to prepare for new level
+            sleep(1.0)
 
             # Increase level
             self.stats.level += 1

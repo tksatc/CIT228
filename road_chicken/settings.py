@@ -9,7 +9,7 @@ class Settings:
         self.bg_color = (206, 211, 212)
 
         # Chicken Settings
-        self.chicken_speed = 1.5
+        self.chicken_speed = 1.0
         self.chicken_lives = 5
 
         # Vehicle Settings
@@ -32,7 +32,7 @@ class Settings:
         self.chicken_points = 100
 
         # Traffic Direction of 1 for right, down; -1 for left, up       # DOES THIS EVEN MAKE SENSE HERE?
-        self.fleet_direction = 1
+        #self.fleet_direction = 1
 
     def increase_speed(self):
         """Increases speed and point values on level-up"""

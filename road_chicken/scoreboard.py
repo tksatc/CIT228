@@ -13,7 +13,7 @@ class Scoreboard:
         self.settings = rc_game.settings
         self.stats = rc_game.stats
 
-        # Font settings for scoreboard          # MOVE TO SETTINGS CLASS???
+        # Font settings for scoreboard
         self.text_color = (30, 30, 30)
         self.font = pygame.font.SysFont(None, 48)
 
@@ -23,9 +23,6 @@ class Scoreboard:
 
         # Prepare level image           
         self.prep_level()
-
-        # Displays remaining chicken lives on screen
-        #self.prep_chickens()
 
     def prep_score(self):
         """Render text into image"""
@@ -74,23 +71,4 @@ class Scoreboard:
         self.level_rect = self.level_image.get_rect()
         self.level_rect.right = self.score_rect.right
         self.level_rect.top = self.score_rect.bottom + 10
-    """
-    def prep_chickens(self):
-        #Create group of chicken lives to display on screen
-        chicken_lives_str = str(self.stats.chickens_left)
-        self.chicken_lives_image = self.font.render(chicken_lives_str, True,
-                    self.text_color, self.settings.bg_color)
         
-        # Position number remaining chickens in upper left corner
-        self.chicken_lives_rect = self.chicken_lives_image.get_rect()
-        self.chicken_lives_rect.left = self.screen.rect + 20
-        self.chicken_lives_rect.top = 20
-
-        
-        self.chickens = Group()
-        for chicken_number in range (self.stats.chickens_left):
-            chicken = Chicken(self.rc_game)
-            chicken.rect.x = 10 + chicken_number * chicken.rect.width
-            chicken.rect.y = 10
-            self.chickens.add(chicken)
-        """

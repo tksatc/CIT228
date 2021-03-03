@@ -13,8 +13,7 @@ class Chicken(Sprite):
 
         # Load the chicken image and get its rect
         self.image = pygame.image.load("road_chicken/images/chicken-3412665_640.png")
-        self.image = pygame.transform.scale(self.image, (65, 65))           #REDUCE SIZE; ADJUST CALCS IN ROAD_CHICKEN
-        #self.image = self.image.convert()
+        self.image = pygame.transform.scale(self.image, (65, 65))           
         self.rect = self.image.get_rect()
 
         # Start each new chicken at the bottom center position
@@ -29,7 +28,6 @@ class Chicken(Sprite):
         self.moving_left = False
         self.moving_up = False
         self.moving_down = False
-
     
     def update(self):
         """Update chicken's position based on movement flags"""
