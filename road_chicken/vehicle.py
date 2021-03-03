@@ -13,7 +13,6 @@ class Vehicle(Sprite):
         # Load vehicle image and set rect attributes
         self.image = pygame.image.load("road_chicken/images/xmas_vw.png")
         self.image = pygame.transform.scale(self.image, (125, 75))
-        #self.image = self.image.convert()
         self.rect = self.image.get_rect()
 
         # Start vehicle near top left of screen
