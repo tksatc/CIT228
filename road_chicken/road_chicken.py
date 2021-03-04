@@ -135,8 +135,7 @@ class RoadChicken:
         number_lanes = available_space_y // int((1.25 * vehicle_height))
 
         # Populate a lane of vehicles
-        for lane_number in range(number_lanes):
-            
+        for lane_number in range(number_lanes):           
             # Create random padding
             space_around_vehicle = random.randrange(2, 7)
             
@@ -148,31 +147,39 @@ class RoadChicken:
                 self._create_vehicle(vehicle_number, lane_number)
 
     def _create_vehicle(self, vehicle_number, lane_number):
-        # Create a vehicle and place it in a row
-        vehicle = Vehicle(self)
+        # Create a vehicle and place it in a row          
+        vehicle = Vehicle(self)        
         vehicle_width, vehicle_height = vehicle.rect.size
         
         # Calculate random padding for vehicle
         space_around_vehicle = (random.randrange(3, 5) * vehicle_width)
-        
+    
         # Calculate total space of vehicle (vehicle + padding)
         vehicle.x = vehicle_width + space_around_vehicle * vehicle_number
         vehicle.rect.x = vehicle.x
         vehicle.rect.y = vehicle.rect.height + int(1.25 * vehicle.rect.height) * lane_number
         self.vehicles.add(vehicle)
 
+    def _remove_vehicle(self):
+        """Remove a vehicle when it meets left edge of screen"""
+        for vehicle in self.vehicles.copy():
+            if vehicle.rect.x <= 0:
+                self.vehicles.remove(vehicle)
+                
+    def _new_traffic(self):
+        """Repopulates traffic when vehicles group is empty"""
+        if not self.vehicles:
+            self._create_traffic()
+
     def _update_vehicles(self):
         """Update position of all vehicles in traffic"""
         self.vehicles.update()
 
         # Remove vehicles once off screen
-        for vehicle in self.vehicles.copy():
-            if vehicle.rect.x <= 0:
-                self.vehicles.remove(vehicle)
+        self._remove_vehicle()
 
         # Repopulate traffic for continuous flow
-        if not self.vehicles:
-            self._create_traffic()
+        self._new_traffic()
 
         # Check for collisions with chickens
         if pygame.sprite.spritecollideany(self.chicken, self.vehicles):
