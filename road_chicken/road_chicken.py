@@ -206,9 +206,7 @@ class RoadChicken:
             # Create new traffic & chicken
             self._create_traffic()
             self.chicken.center_chicken()       
-        
-            # Pause briefly for user to prepare new round
-            sleep(0.5)
+
         else:
             self.stats.game_active = False
             pygame.mouse.set_visible(True)
