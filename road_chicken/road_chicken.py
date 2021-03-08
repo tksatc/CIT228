@@ -1,3 +1,9 @@
+"""
+Much of the base code is taken from the Alien Invasion textbook project
+(Python Crash Course, 2nd ed.).  Credits for media files are included
+in the ReadMe.txt file.  Game instructions also in the ReadMe.txt file.
+"""
+
 import sys
 from time import sleep
 import pygame
