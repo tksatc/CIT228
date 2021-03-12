@@ -16,14 +16,14 @@ plt.ylabel("Values Cubed")
 plt.grid()
 
 # Plot 2 - Raised to the 2nd Power
-raisedNumbers = []
+pow = []
 
 for num in input_values:
-    raisedNumbers.append(num**2)
+    pow.append(num**2)
 
 ax2 = plt.subplot(1, 2, 2)
 plt.style.use("seaborn-paper")
-ax2.plot(input_values, raisedNumbers, color='purple')
+ax2.plot(input_values, pow, color='purple', marker='^')
 plt.title("Raised Numbers")
 plt.xlabel("Input Values")
 plt.ylabel("2nd Power Value")
