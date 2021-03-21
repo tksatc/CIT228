@@ -1,3 +1,5 @@
+"""Creates a chart showing labor force in the prime market"""
+
 import csv
 import matplotlib.pyplot as plt
 
@@ -22,12 +24,12 @@ with open(filename) as f:
         force.append(int(row[1]))
         avail_labor.append(int(row[3]))
 
-plt.bar(counties_titles, force, color="lightgreen", label="Labor")
-plt.bar(counties_titles, avail_labor, bottom=force, color="plum", label="Unemployed")
+plt.bar(counties_titles, force, color="maroon", label="Labor")
+plt.bar(counties_titles, avail_labor, bottom=force, color="cadetblue", label="Unemployed")
 
 plt.xlabel("County")
 plt.ylabel("Population")
-plt.title("Labor Force")
+plt.title("Labor Force", fontsize=18)
 plt.legend(loc='best')
 
 plt.show()

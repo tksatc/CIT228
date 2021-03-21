@@ -1,3 +1,5 @@
+"""Retrieves & charts (2 charts) education levels for primary & ancillary markets"""
+
 import csv
 import matplotlib.pyplot as plt
 
@@ -12,7 +14,6 @@ with open(filename) as edu:
     header_row = next(reader)
     state_total = next(reader)
 
-    # Extract counties and education levels
     prime_counties, anc_counties = [], []
     prime_adult_pop, anc_adult_pop = [], []
     prime_high, anc_high = [], []
@@ -20,7 +21,8 @@ with open(filename) as edu:
     prime_assoc, anc_assoc = [], []
     prime_bach, anc_bach = [], []
     prime_grad, anc_grad = [], []
-        
+
+    # Extract counties and education levels    
     for row in reader:
         county = row[0].lower()
         adult_pop = int(row[1])
@@ -53,6 +55,7 @@ labels = ["High School/Equivalent", "Some College", "Associate's", "Bachelor's",
             "Graduate/Professional"]
 prime_totals, anc_totals = [], []
 
+# Calculate totals for percentage conversion
 prime_totals.append(sum(prime_high))
 prime_totals.append(sum(prime_someC))
 prime_totals.append(sum(prime_assoc))
@@ -65,12 +68,13 @@ anc_totals.append(sum(anc_assoc))
 anc_totals.append(sum(anc_bach))
 anc_totals.append(sum(anc_grad))
 
-
+# Primary market chart
 fig1, ax1 = plt.subplots()
 ax1.pie(prime_totals, labels=labels, autopct='%3.1f%%')
 ax1.axis('equal')
 plt.title("Education Levels - Primary Market\n25 Years of Age and Over")
 
+# Ancillary market chart
 fig2, ax2 = plt.subplots()
 ax2.pie(anc_totals, labels=labels, autopct='%3.1f%%')
 ax2.axis('equal')
