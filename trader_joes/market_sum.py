@@ -55,4 +55,6 @@ plt.xticks(rotation = 45)
 plt.suptitle("Routine Consumer Markets", fontsize=16)
 plt.subplots_adjust(top=.9, wspace=.5)
 
+plt.savefig("market_population.png")
+
 plt.show()

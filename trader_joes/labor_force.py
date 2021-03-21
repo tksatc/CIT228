@@ -32,4 +32,6 @@ plt.ylabel("Population")
 plt.title("Labor Force", fontsize=18)
 plt.legend(loc='best')
 
+plt.savefig("labor_force.png")
+
 plt.show()

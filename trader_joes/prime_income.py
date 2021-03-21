@@ -47,4 +47,6 @@ plt.title("Median & Mean Household Income\nPrime Market", fontsize=16)
 plt.legend(loc='best')
 plt.xticks(rotation = 45)   # County labels shown diagonally
 
+plt.savefig("prime_income.png")
+
 plt.show()

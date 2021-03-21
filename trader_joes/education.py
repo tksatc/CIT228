@@ -80,4 +80,6 @@ ax2.pie(anc_totals, labels=labels, autopct='%3.1f%%')
 ax2.axis('equal')
 plt.title("Education Levels - Ancillary Market\n25 Years of Age and Over")
 
+plt.savefig("market_education.png")
+
 plt.show()
