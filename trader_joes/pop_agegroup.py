@@ -36,6 +36,7 @@ with open(filename) as f:
             age70_79.append(int(row[33]))
             age80_plus.append(int(row[36]))
 
+"""This is ugly!  Write lamba generator"""
 # Calculate left margin for bar subsets
 x2 = under18
 x3 = list(map(lambda a,b: a+b, under18, age18_29))
@@ -62,5 +63,7 @@ plt.xlabel("Population")
 plt.ylabel("County")
 plt.title("County Populations by Age Group", fontsize=18)
 plt.legend(loc='upper right', title="Age Groups")
+
+plt.savefig("market_age_group.png")
 
 plt.show()

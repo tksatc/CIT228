@@ -43,7 +43,7 @@ plt.bar(bar2, prime_mean, width=barWidth, color='darkgreen', label="Mean Income"
 
 plt.ylabel("Income")
 plt.xlabel("County")
-plt.title("Median & Mean Household Income\nPrime Market", fontsize=16)
+plt.title("Median & Mean Household Income\nPrimary Market", fontsize=16)
 plt.legend(loc='best')
 plt.xticks(rotation = 45)   # County labels shown diagonally
 
