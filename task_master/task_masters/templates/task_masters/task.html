@@ -1,0 +1,26 @@
+{% extends "task_masters/base.html" %}
+
+{% block content %}
+
+    <p>Task: {{ task }}</p>
+
+    <p>Notes:</p>
+    <p>
+        <a href="{% url 'task_masters:new_note' task.id %}">Add new note</a>
+    </p>
+
+    <ul>
+    {% for note in notes %}
+        <li>
+            <p>{{ note.date_added|date:'M d, Y' }}</p>
+            <p>{{ note.text|linebreaks }}</p>
+            <p>
+                <a href="{% url 'task_masters:edit_note' note.id %}">Edit note</a>
+            </p>
+        </li>
+    {% empty %}
+        <li>There are not notes for this task yet.</li>
+    {% endfor %}
+    </ul>
+
+{% endblock content %}

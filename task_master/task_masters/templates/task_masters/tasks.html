@@ -1,0 +1,19 @@
+{% extends "task_masters/base.html" %}
+
+{% block content %}
+
+    <p>Tasks</p>
+
+    <ul>
+        {% for task in tasks %}
+            <li>
+                <a href="{% url 'task_masters:task' task.id %}">{{ task }}</a>
+            </li>
+        {% empty %}
+            <li>No tasks have been added yet.</li>
+        {% endfor %}
+    </ul>
+
+    <a href="{% url 'task_masters:new_task' %}">Add a new task</a>
+
+{% endblock content %}

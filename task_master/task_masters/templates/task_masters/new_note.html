@@ -1,0 +1,14 @@
+{% extends "task_masters/base.html" %}
+
+{% block content %}
+
+    <p><a href="{% url 'task_masters:task' task.id %}">{{ task }}</a> </p>
+
+    <p>Add a new note:</p>
+    <form action="{% url 'task_masters:new_note' task.id %}" method='post'>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button name="submit">Add note</button>
+    </form>
+
+{% endblock content %}
