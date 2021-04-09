@@ -1,5 +1,9 @@
 {% extends "task_masters/base.html" %}
 
+{% block page_header %}
+    <h3>{{ task }}</h3>
+{% endblock page_header %}
+
 {% block content %}
 
     <p>Task: {{ task }}</p>
@@ -9,18 +13,20 @@
         <a href="{% url 'task_masters:new_note' task.id %}">Add new note</a>
     </p>
 
-    <ul>
     {% for note in notes %}
-        <li>
-            <p>{{ note.date_added|date:'M d, Y' }}</p>
-            <p>{{ note.text|linebreaks }}</p>
-            <p>
-                <a href="{% url 'task_masters:edit_note' note.id %}">Edit note</a>
-            </p>
-        </li>
+        <div class="card mb-3">
+            <h4 class="card-header">
+                {{ note.date_added|date:'M d, Y' }}
+                <small><a href="{% url 'task_masters:edit_note' note.id %}">
+                    edit note</a> </small>
+            </h4>
+            <div class="card-body">
+                {{ note.text|linebreaks }}
+            </div>
+        </div>
+
     {% empty %}
-        <li>There are not notes for this task yet.</li>
+        <p>There are not any notes for this task yet.</p>
     {% endfor %}
-    </ul>
 
 {% endblock content %}

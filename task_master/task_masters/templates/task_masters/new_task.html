@@ -1,12 +1,24 @@
 {% extends "task_masters/base.html" %}
+{% load bootstrap4 %}
+
+{% block page_header %}
+    <h2>Create a New Task</h2>
+{% endblock page_header %}
 
 {% block content %}
-    <p>Add a new task:</p>
 
-    <form action="{% url 'task_masters:new_task' %}" method='post'>
+    <p>Enter a descriptive title for your task:</p>
+    <p>Select the priority of the task:  1 = high; 2 = medium; 3 = low; 9 = whenever time is available</p>
+    <p>Enter the date your task is due:</p>
+
+    <p>New task:</p>
+
+    <form method="post" action="{% url 'task_masters:new_task' %}" class="form">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button name="submit">Add task</button>
+        {% bootstrap_form form %}
+        {% buttons %}
+            <button name="submit" class="btn btn-primary">Create Task</button>
+        {% endbuttons %}
     </form>
 
 {% endblock content %}

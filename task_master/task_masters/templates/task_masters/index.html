@@ -1,7 +1,15 @@
 {% extends "task_masters/base.html" %}
 
-{% block content %}
+{% block page_header %}
+    <div class="jumbotron">
+        <h1 class="display-3">Manage Your Tasks</h1>
 
-    <p>Task Master tracks your "to-dos" and helps increase your productivity.</p>
+        <p class="lead">Manage all of your tasks in one centralized location.  Create a new task for each item
+            on your "to-do" list, apply a priority code and due date, and add information for the task.  When you
+            complete the task, mark it as 'Done' and add notes about your final steps.  Watch your productivity
+            skyrocket!</p>
 
-{% endblock content %}
+        <a class="btn btn-lg btn-primary" href="{% url 'users:register' %}"
+           role="button">Register &raquo;</a>
+    </div>
+{% endblock page_header %}

@@ -1,7 +1,15 @@
 {% extends "task_masters/base.html" %}
+{% load bootstrap4 %}
+
+{% block page_header %}
+    <h2>Log out Confirmed</h2>
+{% endblock page_header %}
 
 {% block content %}
 
-    <p>You have been logged out.  We'll see you next time.</p>
+    <p><h4>You have been logged out.  We'll see you next time.</h4></p>
+
+        <a class="btn btn-lg btn-primary" href="{% url 'users:login' %}"
+           role="button">Log in &raquo;</a>
 
 {% endblock content %}

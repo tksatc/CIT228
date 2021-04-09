@@ -1,19 +1,25 @@
 {% extends "task_masters/base.html" %}
+(% load bootstrap4 %}
+
+{% block page_header %}
+    <h1 class="text-muted">Tasks</h1>
+{% endblock page_header %}
 
 {% block content %}
 
-    <p>Tasks</p>
+    <h2>Current Tasks</h2>
 
     <ul>
         {% for task in tasks %}
-            <li>
-                <a href="{% url 'task_masters:task' task.id %}">{{ task }}</a>
-            </li>
+            <li><h3>
+                <a href="{% url 'task_masters:task' task.id %}" class="text-info">{{ task }}</a>
+            </h3></li>
         {% empty %}
-            <li>No tasks have been added yet.</li>
+        <li><h3>No tasks have been added yet.</h3>
+        </li>
         {% endfor %}
     </ul>
 
-    <a href="{% url 'task_masters:new_task' %}">Add a new task</a>
+    <h6><a href="{% url 'task_masters:new_task' %}">Add a new task</a></h6>
 
 {% endblock content %}

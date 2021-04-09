@@ -34,6 +34,9 @@ INSTALLED_APPS = [
     # My Apps
     'task_masters',
     'users',
+
+    # 3rd Party Apps
+    'bootstrap4',
     
     # Default Apps
     'django.contrib.admin',

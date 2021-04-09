@@ -1,0 +1,22 @@
+{% extends "task_masters/base.html" %}
+{% load bootstrap4 %}
+
+{% block page_header %}
+    <h2>Register an Account</h2>
+{% endblock page_header %}
+
+{% block content %}
+
+<p><h4>Create a User Name and Password, confirm your Password, then click the 'Register' button.</h4></p>
+
+    <form method="post" action="{% url 'users:register' %}" class="form">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        {% buttons %}
+            <button name="submit" class="btn btn-primary">Register</button>
+        {% endbuttons %}
+
+        <input type="hidden" name="next" value="{% url 'task_masters:index' %}" />
+    </form>
+
+{% endblock content %}
