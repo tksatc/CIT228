@@ -7,10 +7,11 @@
 
 {% block content %}
 
-<p><h4>Create a User Name and a Password, then confirm the Password and click the 'Register' button.</h4></p>
-    <form method="post" action="{% url 'users:register' %}">
+<h4>Create a User Name and a Password, then confirm the Password and click the 'Register' button.</h4>
+
+    <form method="post" action="{% url 'users:register' %}" class="form">
         {% csrf_token %}
-        {{ form.as_p }}
+        {% bootstrap_form form %}
         {% buttons %}
             <button name="submit" class="btn btn-primary">Register</button>
         {% endbuttons %}

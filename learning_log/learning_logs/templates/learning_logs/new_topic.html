@@ -7,13 +7,13 @@
 
 {% block content %}
 
-<p><h4>Enter a name for the topic, then click the 'Add topic' button.</h4></p>
+<h4>Enter a name for the new topic, then click the 'Add Topic' button.</h4>
 
-    <form action="{% url 'learning_logs:new_topic' %}" method='post'>
+    <form method="post" action="{% url 'learning_logs:new_topic' %}" class="form">
         {% csrf_token %}
-        {{ form.as_p }}
+        {% bootstrap_form form %}
         {% buttons %}
-            <button name="submit" class="btn btn-primary">Add topic</button>
+            <button name="submit" class="btn btn-primary">Add Topic</button>
         {% endbuttons %}
     </form>
 
