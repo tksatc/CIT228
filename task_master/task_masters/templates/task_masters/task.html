@@ -1,4 +1,5 @@
 {% extends "task_masters/base.html" %}
+{% load bootstrap4 %}
 
 {% block page_header %}
     <h3>{{ task }}</h3>
@@ -28,5 +29,7 @@
     {% empty %}
         <p>There are not any notes for this task yet.</p>
     {% endfor %}
+
+    <a href="{% url 'task_masters:edit_task' task.id %}">Edit Task</a>
 
 {% endblock content %}

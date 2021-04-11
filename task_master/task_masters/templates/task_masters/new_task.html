@@ -12,13 +12,14 @@
     <p>Enter the date your task is due:</p>
 
     <p>New task:</p>
-
-    <form method="post" action="{% url 'task_masters:new_task' %}" class="form">
-        {% csrf_token %}
-        {% bootstrap_form form %}
-        {% buttons %}
-            <button name="submit" class="btn btn-primary">Create Task</button>
-        {% endbuttons %}
-    </form>
+    <div class="form-group">
+        <form method="post" action="{% url 'task_masters:new_task' %}" class="form">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            {% buttons %}
+                <button name="submit" class="btn btn-info">Create Task</button>
+            {% endbuttons %}
+        </form>
+    </div>
 
 {% endblock content %}

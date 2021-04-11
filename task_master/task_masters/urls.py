@@ -17,4 +17,6 @@ urlpatterns = [
     path('new_note/<int:task_id>/', views.new_note, name='new_note'),
     # Page for editing a note
     path('edit_note/<int:note_id>/', views.edit_note, name='edit_note'),
+    # Page for editing a task
+    path('edit_task/<int:task_id>/', views.edit_task, name='edit_task'),
 ]

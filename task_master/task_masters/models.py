@@ -9,7 +9,8 @@ class Task(models.Model):
     name = models.CharField(max_length=300)
     priority = models.CharField(max_length=1, default='1')
     due_date = models.DateField(default=datetime.date.today)
-    # completed = models.CharField(max_length=1)
+    completed = models.BooleanField(default=False)
+    date_completed = models.DateField(default=datetime.date.today)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):

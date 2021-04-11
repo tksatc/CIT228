@@ -2,16 +2,16 @@
 {% load bootstrap4 %}
 
 {% block page_header %}
-    <h2>Edit an Existing Note</h2>
+    <h2>Edit an Existing Task</h2>
 {% endblock page_header %}
 
 {% block content %}
 
     <p><a href="{% url 'task_masters:task' task.id %}">{{ task }}</a></p>
 
-    <p>Make any changes to the note, then click the 'Save Changes' button.</p>
+    <p>Modify your task title or mark it 'Done', then click the 'Save Changes' button.</p>
 
-    <form method="post" action="{% url 'task_masters:edit_note' note.id %}" class="form">
+    <form method="post" action="{% url 'task_masters:edit_task' task.id %}" class="form">
         {% csrf_token %}
         {% bootstrap_form form %}
         {% buttons %}

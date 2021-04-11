@@ -76,6 +76,25 @@ def new_note(request, task_id):
 
 
 @login_required
+def edit_task(request, task_id):
+    """Edit task to mark commplete"""
+    task = Task.objects.get(id=task_id)
+    if task.owner != request.user:
+        raise Http404
+
+    if request.method != 'POST':
+        form = TaskForm(instance=task)
+    else:
+        form = TaskForm(instance=task, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('task_masters:task', task_id=task.id)
+
+    context = {'task': task, 'form': form}
+    return render(request, 'task_masters/edit_task.html', context)
+
+
+@login_required
 def edit_note(request, note_id):
     """Edit an existing note"""
     note = Note.objects.get(id=note_id)
