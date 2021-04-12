@@ -2,24 +2,27 @@
 {% load bootstrap4 %}
 
 {% block page_header %}
-    <h3>{{ task }}</h3>
+    <h2 class="text-muted">{{ task }}</h2>
 {% endblock page_header %}
 
 {% block content %}
 
-    <p>Task: {{ task }}</p>
-
-    <p>Notes:</p>
+    <br>
     <p>
-        <a href="{% url 'task_masters:new_note' task.id %}">Add new note</a>
+        <a href="{% url 'task_masters:new_note' task.id %}" class="btn btn-info">Add New Note</a>
     </p>
+    <br>
+
+    <h4 class="text-info">
+        <p class="font-weight-bold">Notes:</p>
+    </h4>
 
     {% for note in notes %}
         <div class="card mb-3">
             <h4 class="card-header">
                 {{ note.date_added|date:'M d, Y' }}
-                <small><a href="{% url 'task_masters:edit_note' note.id %}">
-                    edit note</a> </small>
+                <small><a href="{% url 'task_masters:edit_note' note.id %}" class="text-info">
+                    Edit Note</a> </small>
             </h4>
             <div class="card-body">
                 {{ note.text|linebreaks }}
@@ -27,9 +30,12 @@
         </div>
 
     {% empty %}
-        <p>There are not any notes for this task yet.</p>
+        <p class="text-info">There are not any notes for this task yet.</p>
     {% endfor %}
 
-    <a href="{% url 'task_masters:edit_task' task.id %}">Edit Task</a>
+    <br>
+    {% if task.completed != True %}
+        <a href="{% url 'task_masters:edit_task' task.id %}" class="btn btn-info">Edit Task</a>
+    {% endif %}
 
 {% endblock content %}

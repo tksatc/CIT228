@@ -2,14 +2,15 @@
 {% load bootstrap4 %}
 
 {% block page_header %}
-    <h2>Edit an Existing Task</h2>
+    <h2 class="text-muted">Edit Your Task</h2>
 {% endblock page_header %}
 
 {% block content %}
 
-    <p><a href="{% url 'task_masters:task' task.id %}">{{ task }}</a></p>
+    <h4><a href="{% url 'task_masters:task' task.id %}" class="text-info">Task: {{ task }}</a></h4>
+    <br>
 
-    <p>Modify your task title or mark it 'Done', then click the 'Save Changes' button.</p>
+    <h6 class="text-info">Make changes to your task details, or mark it 'Completed', then click the 'Save Changes' button.</h6>
 
     <form method="post" action="{% url 'task_masters:edit_task' task.id %}" class="form">
         {% csrf_token %}

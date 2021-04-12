@@ -2,24 +2,30 @@
 (% load bootstrap4 %}
 
 {% block page_header %}
-    <h1 class="text-muted">Tasks</h1>
+    <h1 class="text-muted">Current Tasks</h1>
 {% endblock page_header %}
 
 {% block content %}
 
-    <h2>Current Tasks</h2>
+    <a href="{% url 'task_masters:completed_tasks' %}" class="btn btn-info">View Completed Tasks</a>
+    <br><br>
+    <h5 class="text-secondary">To edit a task, click on the task name.</h5>
+    <br>
 
-    <ul>
+    <ul class="text-info">
         {% for task in tasks %}
-            <li><h3>
-                <a href="{% url 'task_masters:task' task.id %}" class="text-info">{{ task }}</a>
-            </h3></li>
+            {% if task.completed == False %}
+                <li><h4>
+                    <a href="{% url 'task_masters:task' task.id %}" class="text-info">{{ task }}</a>
+                </h4></li>
+            {% endif %}
         {% empty %}
-        <li><h3>No tasks have been added yet.</h3>
+        <li><h4>No tasks have been added yet.</h4>
         </li>
         {% endfor %}
     </ul>
 
-    <h6><a href="{% url 'task_masters:new_task' %}">Add a new task</a></h6>
+    <br><br>
+    <a href="{% url 'task_masters:new_task' %}" class="btn btn-info">Add a New Task</a>
 
 {% endblock content %}

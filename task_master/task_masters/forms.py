@@ -2,18 +2,24 @@ from django import forms
 
 from .models import Task, Note
 
-# 'priority' needs to change to forms.Select when drop-down menu is identified
+PRIORITY_CHOICES = [
+    (1, '1'),
+    (2, '2'),
+    (3, '3'),
+    (9, '9'),
+]
+
 
 class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
-        fields = ['name', 'priority', 'due_date']
+        fields = ['name', 'priority', 'due_date', 'completed', 'date_completed']
         labels = {'name': ''}
-        widgets = {'name': forms.TextInput(attrs={'class':'form-control', 'placeholder': 'Task title'}),
-                   'priority': forms.TextInput(attrs={'class': 'form-control'}),
-                   'due_date': forms.DateInput(attrs={'class': 'form-control'}),
-                   'completed': forms.CheckboxInput(attrs={'class': 'form-control'}),
-                   'date_completed': forms.DateInput(attrs={'class': 'form-control'}),
+        widgets = {'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Task title'}),
+                   'priority': forms.Select(choices=PRIORITY_CHOICES),
+                   'due_date': forms.SelectDateWidget(),
+                   'completed': forms.CheckboxInput(),
+                   'date_completed': forms.SelectDateWidget(),
                    }
 
 

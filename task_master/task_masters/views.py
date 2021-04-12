@@ -54,6 +54,14 @@ def new_task(request):
 
 
 @login_required
+def completed_tasks(request):
+    """Show all tasks"""
+    tasks = Task.objects.filter(owner=request.user).order_by('due_date')
+    context = {'tasks': tasks}
+    return render(request, 'task_masters/completed_tasks.html', context)
+
+
+@login_required
 def new_note(request, task_id):
     """Add a new note for a specific task"""
     task = Task.objects.get(id=task_id)

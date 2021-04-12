@@ -2,12 +2,12 @@
 {% load bootstrap4 %}
 
 {% block page_header %}
-    <h2>Register an Account</h2>
+    <h2 class="text-muted">Register an Account</h2>
 {% endblock page_header %}
 
 {% block content %}
 
-<p><h4>Create a User Name and Password, confirm your Password, then click the 'Register' button.</h4></p>
+    <h4 class="text-info">Create a User Name and Password, confirm your Password, then click the 'Register' button.</h4>
 
     <form method="post" action="{% url 'users:register' %}" class="form">
         {% csrf_token %}

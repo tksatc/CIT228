@@ -1,0 +1,29 @@
+{% extends "task_masters/base.html" %}
+(% load bootstrap4 %}
+
+{% block page_header %}
+    <h1 class="text-muted">Completed Tasks</h1>
+{% endblock page_header %}
+
+{% block content %}
+
+    <h5 class="text-secondary">Click on a completed task to view details and notes.</h5>
+    <br>
+
+    <ul class="text-info">
+        {% for task in tasks %}
+            {% if task.completed == True %}
+                <li><h4>
+                    <a href="{% url 'task_masters:task' task.id %}" class="text-info"><s>{{ task }}</s></a>
+                </h4></li>
+            {% endif %}
+        {% empty %}
+        <li><h4>No tasks have been completed yet.</h4>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <br><br>
+    <a href="{% url 'task_masters:tasks' %}" class="btn btn-info">Return to the Tasks page</a>
+
+{% endblock content %}

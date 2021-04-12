@@ -19,4 +19,6 @@ urlpatterns = [
     path('edit_note/<int:note_id>/', views.edit_note, name='edit_note'),
     # Page for editing a task
     path('edit_task/<int:task_id>/', views.edit_task, name='edit_task'),
+    # Page for viewing completed tasks
+    path('completed_tasks/', views.completed_tasks, name='completed_tasks')
 ]

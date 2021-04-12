@@ -2,19 +2,19 @@
 {% load bootstrap4 %}
 
 {% block page_header %}
-    <h2>Create a New Note</h2>
+    <h2 class="text-muted">Create a New Note</h2>
 {% endblock page_header %}
 
 {% block content %}
 
-    <p><a href="{% url 'task_masters:task' task.id %}">{{ task }}</a> </p>
-
-    <p>New note:</p>
+    <h4><a href="{% url 'task_masters:task' task.id %}" class="text-info">Task: {{ task }}</a> </h4>
+    <br>
+    <p class="font-weight-bold">New note:</p>
     <form method="post" action="{% url 'task_masters:new_note' task.id %}" class="form">
         {% csrf_token %}
         {% bootstrap_form form %}
         {% buttons %}
-            <button name="submit" class="btn btn-primary">Create Note</button>
+            <button name="submit" class="btn btn-info">Create Note</button>
         {% endbuttons %}
     </form>
 

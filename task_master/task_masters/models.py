@@ -1,16 +1,16 @@
 from django.db import models
 from django.contrib.auth.models import User
-import datetime
 
 
 # Create your models here.
 class Task(models.Model):
     """A Task the user has"""
+
     name = models.CharField(max_length=300)
-    priority = models.CharField(max_length=1, default='1')
-    due_date = models.DateField(default=datetime.date.today)
+    priority = models.CharField(max_length=1)
+    due_date = models.DateField(null=True)
     completed = models.BooleanField(default=False)
-    date_completed = models.DateField(default=datetime.date.today)
+    date_completed = models.DateField(null=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
