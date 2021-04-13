@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
 
@@ -23,6 +23,7 @@ def tasks(request):
 @login_required
 def task(request, task_id):
     """Show a single task and all its notes"""
+    task = get_object_or_404(Task, id=task_id)
     task = Task.objects.get(id=task_id)
     # Make sure the task belongs to the current user
     if task.owner != request.user:
